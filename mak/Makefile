@@ -1,10 +1,10 @@
 #dcd
-src = $(wildcard *.txt)#
+src = $(wildcard src/*.txt)#
 out = $(src:.txt=.o)#
 
 all : $(out)
 %.o : %.txt
 	cp $< $@
-	echo $<
+#	echo $<
 	
 	
