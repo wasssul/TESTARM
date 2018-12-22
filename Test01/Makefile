@@ -1,4 +1,6 @@
 
+# project name
+proj_name = Test01
 # project directories
 src_path = src/#
 obj_path = build/#
@@ -10,21 +12,22 @@ objs = $(subst $(src_path),$(obj_path),$(objs_tmp))
 # compile and link commands
 asm = arm-none-eabi-as#
 cc =  arm-none-eabi-gcc#
+ld =  arm-none-eabi-ld#
 
-build: $(objs)
-	echo $<
+build: $(objs) $(obj_path)startup.o
+	$(ld) -T default.ld $(objs) $(obj_path)startup.o  -o $(obj_path)$(proj_name).elf
+#	echo $<
 
+# rule to compile all c files in src to o files in buod
 $(obj_path)%.o: $(src_path)%.c
-	echo $<
-	echo $@
-
-startup.o: startup.s
+	$(cc) -c $< -o $@
+#rule for startup	
+$(obj_path)startup.o: startup.s
 	$(asm)  startup.s -o $(obj_path)startup.o
-
-main.o: $(src)main.c 
-	$(cc) -c $(src)main.c -o $(obj_path)main.o
-
-
+#
+clean:
+	rm -r $(obj_path)*.*
+	ls -al $(obj_path)
 
 
 
